@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author chbandara
- *
- */
-module LambdaPOC {
-}

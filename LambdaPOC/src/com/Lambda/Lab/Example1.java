@@ -9,6 +9,4 @@ public class Example1 {
 		MyFunctionalInterface msg = () -> "Hello";
 		System.out.println(msg.sayHello());
 	}
-	
-
 }
