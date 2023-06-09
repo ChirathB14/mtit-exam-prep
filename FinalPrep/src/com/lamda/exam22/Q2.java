@@ -34,50 +34,55 @@ public class Q2 {
 
 	// output XML filename
 	private static final String OUTPUT_FILENAME = "students.xml";
+	
+	// Attribute Values
+	private static final String GENDER_ATTRIBUTE_VALUE = "male";
+	private static final String INITIALS_ATTRIBUTE_VALUE = "S.A.";
+	private static final String NAME_ELEMENT_VALUE = "Nalaka Dissanayaka";
+	private static final String NO_ATTRIBUTE_VALUE = "115/1";
+	private static final String STREET_ATTRIBUTE_VALUE = "Avenue Street";
+	private static final String ADDRESS_ELEMENT_VALUE = "No: 115/1, Avenue Street, Kandy";
 
-	private static Document createDocument() throws Exception {
+	public static Document createDocument() throws Exception {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		return documentBuilder.newDocument();
 	}
 
-	private static Element createElement(Document document, String name) throws Exception {
+	public static Element createElement(Document document, String name) throws Exception {
 		return document.createElement(name);
 	}
 
-	private static void appendChild(Element rootElement, Element childElement) throws Exception {
+	public static void appendChild(Element rootElement, Element childElement) throws Exception {
 		rootElement.appendChild(childElement);
 	}
 
-	private static void appendChild(Document document, Element Element, String value) throws Exception {
+	public static void appendChild(Document document, Element Element, String value) throws Exception {
 		Element.appendChild(document.createTextNode(value));
 	}
 
-	private static Attr createAttribute(Document document, String name) throws Exception {
+	public static Attr createAttribute(Document document, String name) throws Exception {
 		return document.createAttribute(name);
 	}
 
-	private static void setAtttributeForElement(Attr attribute, Element element, String value) throws Exception {
+	public static void setAtttributeForElement(Attr attribute, Element element, String value) throws Exception {
 		attribute.setValue(value);
 		element.setAttributeNode(attribute);
 	}
 
-	private static DOMSource transformToXml(Document document) throws Exception {
-		return new DOMSource(document);
-	}
-
-	private static void buildXmlFile(String filename, DOMSource domSource) throws Exception {
+	public static void transformToXml(Document document, String filename) throws Exception {
 		TransformerFactory transFactory = TransformerFactory.newInstance();
 		Transformer transformer = transFactory.newTransformer();
+		
+		DOMSource domSource = new DOMSource(document);
 
 		StreamResult result = new StreamResult(new File(filename));
 
 		transformer.transform(domSource, result);
 		transformer.transform(domSource, new StreamResult(System.out));
-
 	}
 
-	private static void generateXmlFile() throws Exception {
+	public static void buildXmlFile() throws Exception {
 		Document document = createDocument();
 
 		Element schoolElement = createElement(document, SCHOOL_ELEMENT_NAME);
@@ -88,34 +93,33 @@ public class Q2 {
 		appendChild(schoolElement, studentsElement);
 
 		Attr genderAttribute = createAttribute(document, GENDER_ATTRIBUTE_NAME);
-		setAtttributeForElement(genderAttribute, studentsElement, "male");
+		setAtttributeForElement(genderAttribute, studentsElement, GENDER_ATTRIBUTE_VALUE);
 
 		Element nameElement = createElement(document, NAME_ELEMENT_NAME);
 		Attr initialsAtttribute = createAttribute(document, INITIALS_ATTRIBUTE_NAME);
-		setAtttributeForElement(initialsAtttribute, nameElement, "S.A.");
+		setAtttributeForElement(initialsAtttribute, nameElement, INITIALS_ATTRIBUTE_VALUE);
 
-		appendChild(document, nameElement, "Nalaka Dissanayaka");
+		appendChild(document, nameElement, NAME_ELEMENT_VALUE);
 		appendChild(studentsElement, nameElement);
 
 		Element addressElement = createElement(document, ADDRESS_ELEMENT_NAME);
 		Attr noAttr = createAttribute(document, NO_ATTRIBUTE_NAME);
-		setAtttributeForElement(noAttr, addressElement, "115/1");
+		setAtttributeForElement(noAttr, addressElement, NO_ATTRIBUTE_VALUE);
 
 		Attr streetAttr = createAttribute(document, STREET_ATTRIBUTE_NAME);
-		setAtttributeForElement(streetAttr, addressElement, "Avenue Street");
+		setAtttributeForElement(streetAttr, addressElement, STREET_ATTRIBUTE_VALUE);
 
-		appendChild(document, addressElement, "No: 115/1, Avenue Street, Kandy");
+		appendChild(document, addressElement, ADDRESS_ELEMENT_VALUE);
 		appendChild(studentsElement, addressElement);
 
-		DOMSource source = transformToXml(document);
-
-		buildXmlFile(OUTPUT_FILENAME, source);
+		transformToXml(document, OUTPUT_FILENAME);
 
 	}
 
+
 	public static void main(String[] args) throws Exception {
 		try {
-			generateXmlFile();
+			buildXmlFile();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
